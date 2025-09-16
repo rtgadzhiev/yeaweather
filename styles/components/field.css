@@ -1,0 +1,30 @@
+.field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  border-radius: var(--border-radius-m);
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-200);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.field__input {
+  width: 100%;
+  padding: 10px 0 10px 20px;
+  background-color: transparent;
+  border-radius: inherit;
+  border: none;
+
+  &::placeholder {
+    color: var(--color-grey-300);
+  }
+}
+
+.field__button {
+  gap: 6px;
+  padding: 10px;
+  border-radius: inherit;
+  border: 3px solid white;
+}

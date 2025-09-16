@@ -1,0 +1,39 @@
+.weather-card {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  padding-block: 40px;
+  width: 100%;
+}
+
+.weather-card__header {
+  --paddingTop: 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.weather-card__title {
+  position: relative;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 100%;
+  padding-top: calc(var(--paddingTop) * 2);
+
+  &::after {
+    position: absolute;
+    content: url(../../assets/images/icons/icon-geo.svg);
+    width: 21px;
+    height: 21px;
+    padding-left: 10px;
+  }
+}
+
+.weather-card__temperature {
+  font-size: 70px;
+  font-weight: 600;
+  line-height: 100%;
+  padding-top: var(--paddingTop);
+}

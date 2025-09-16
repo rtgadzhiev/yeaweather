@@ -1,0 +1,32 @@
+.info-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 20px;
+  gap: 6px;
+  border-radius: var(--border-radius-s);
+  background-color: var(--color-grey-100);
+}
+
+.info-card__item {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.info-card__title {
+  font-weight: 500;
+  font-size: 12px;
+  text-align: center;
+  color: var(--color-grey-300);
+}
+
+.info-card__text {
+  font-weight: 500;
+  font-size: 15px;
+  text-align: center;
+  color: var(--color-dark);
+}

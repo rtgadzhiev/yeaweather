@@ -1,0 +1,15 @@
+.button {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  border: none;
+  border-radius: var(--border-radius-s);
+  transition-duration: var(--transition-duration);
+  background-color: var(--color-grey-100);
+
+  &:hover {
+    background-color: var(--color-grey-200);
+  }
+}

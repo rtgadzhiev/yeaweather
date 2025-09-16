@@ -1,3 +1,13 @@
 :root {
+  --color-grey-100: #f0f0f0;
+  --color-grey-200: #e3e3e3;
+  --color-grey-300: #c4c4c4;
+
+  --color-white: #ffffff;
+  --color-dark: #2c2c2c;
+
+  --border-radius-s: 7px;
+  --border-radius-m: 15px;
+
   --transition-duration: 0.2s;
 }
