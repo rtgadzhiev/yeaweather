@@ -8,14 +8,15 @@
     <script src="./js/script.js" type="module"></script>
   </head>
   <body>
-    <main class="weather container">
-      <form class="weather__form">
+    <main class="weather container" data-js-weather>
+      <form class="weather__form" data-js-search-form>
         <div class="field">
           <input
             class="field__input"
             id="search-city-form"
             type="text"
-            placeholder="Search Location"
+            placeholder="Введите город"
+            data-js-search-form-input
           />
           <button class="field__button button" type="submit">
             <svg class="button__icon" width="18" height="18">
@@ -24,37 +25,11 @@
           </button>
         </div>
       </form>
-      <div class="weather__card weather-card">
-        <header class="weather-card__header">
-          <img
-            class="weather-card__image"
-            src="./assets/images/image-sunny.svg"
-            alt=""
-          />
-          <h2 class="weather-card__title">Saratov</h2>
-          <span class="weather-card__temperature">31°C</span>
-        </header>
-        <ul class="weather-card__list info-card">
-          <li class="weather-card__item info-card__item">
-            <span class="info-card__title">Weather</span>
-            <span class="info-card__text">Sunny</span>
-          </li>
-          <li class="weather-card__item info-card__item">
-            <span class="info-card__title">Wind</span>
-            <span class="info-card__text">2,5 m/s</span>
-          </li>
-          <li class="weather-card__item info-card__item">
-            <span class="info-card__title">Humidity</span>
-            <span class="info-card__text">31%</span>
-          </li>
-          <li class="weather-card__item info-card__item">
-            <span class="info-card__title">Pressure</span>
-            <span class="info-card__text">762</span>
-          </li>
-        </ul>
-        <button class="weather-card__button button">Update Data</button>
-      </div>
+      <div class="weather__card weather-card" data-js-weather-card></div>
+      <button class="weather__button button" data-js-update-button>
+        Обновить
+      </button>
+      <div class="weather__empty-message"></div>
     </main>
   </body>
-  `
 </html>
