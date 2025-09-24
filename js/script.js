@@ -38,11 +38,13 @@ class Weather {
     const city = this.getCityFromLocalStorage();
 
     if (city) {
+      this.showLoadingIndicator();
       const data = await this.fetchData(city);
       const weather = this.getWeather(data);
 
       this.render(weather);
     }
+    this.hideLoadingIndicator();
   }
 
   showLoadingIndicator() {
