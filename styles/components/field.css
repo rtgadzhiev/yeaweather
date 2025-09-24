@@ -21,10 +21,3 @@
     color: var(--color-grey-300);
   }
 }
-
-.field__button {
-  gap: 6px;
-  padding: 10px;
-  border-radius: inherit;
-  border: 3px solid white;
-}

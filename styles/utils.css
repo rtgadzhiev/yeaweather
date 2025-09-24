@@ -4,4 +4,9 @@
   justify-content: center;
   align-items: center;
   padding: 40px 12px;
+  gap: 40px;
+}
+
+.hidden {
+  display: none;
 }

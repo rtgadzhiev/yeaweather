@@ -8,9 +8,8 @@ class Weather {
     searchFormInput: '[data-js-search-form-input]',
     weatherCard: '[data-js-weather-card]',
     updateButton: '[data-js-update-button]',
+    loading: '[data-js-loading]',
   };
-
-  state = {};
 
   constructor() {
     this.rootElement = document.querySelector(this.selectors.root);
@@ -21,11 +20,10 @@ class Weather {
     this.weatherCardElement = document.querySelector(
       this.selectors.weatherCard
     );
-    this.updateButtonElement = document.querySelector(
-      this.selectors.updateButton
-    );
+    this.loadingElement = document.querySelector(this.selectors.loading);
 
     this.bindEvents();
+    this.renderFromLocalStorage();
   }
 
   setCityToLocalStorage(city) {
@@ -36,19 +34,39 @@ class Weather {
     return localStorage.getItem(this.LOCAL_STORAGE_KEY);
   }
 
-  async render(weather) {
-    const {
-      weatherIconId,
-      cityName,
-      temperature,
-      weatherName,
-      weatherDescription,
-      wind,
-      humidity,
-      pressure,
-    } = weather;
+  async renderFromLocalStorage() {
+    const city = this.getCityFromLocalStorage();
 
-    this.weatherCardElement.innerHTML = `
+    if (city) {
+      const data = await this.fetchData(city);
+      const weather = this.getWeather(data);
+
+      this.render(weather);
+    }
+  }
+
+  showLoadingIndicator() {
+    this.loadingElement.classList.remove('hidden');
+  }
+
+  hideLoadingIndicator() {
+    this.loadingElement.classList.add('hidden');
+  }
+
+  render(weather) {
+    if (weather) {
+      const {
+        weatherIconId,
+        cityName,
+        temperature,
+        weatherName,
+        weatherDescription,
+        wind,
+        humidity,
+        pressure,
+      } = weather;
+
+      this.weatherCardElement.innerHTML = `
         <header class="weather-card__header">
           <img
             class="weather-card__image"
@@ -68,7 +86,7 @@ class Weather {
           </li>
           <li class="weather-card__item info-card__item">
             <span class="info-card__title">Ветер</span>
-            <span class="info-card__text">${wind} m/s</span>
+            <span class="info-card__text">${wind} м/с</span>
           </li>
           <li class="weather-card__item info-card__item">
             <span class="info-card__title">Влажность</span>
@@ -76,13 +94,21 @@ class Weather {
           </li>
           <li class="weather-card__item info-card__item">
             <span class="info-card__title">Давление</span>
-            <span class="info-card__text">${pressure}</span>
+            <span class="info-card__text">${pressure} мм.рт.ст.</span>
           </li>
         </ul>
+        <button class="weather__button button" data-js-update-button>
+          Обновить
+        </button>
     `;
+    } else {
+      this.weatherCardElement.innerHTML = '';
+    }
   }
 
   getWeather(data) {
+    if (!data) return;
+
     const weather = {
       weatherIconId: data.weather[0].icon,
       cityName: data.name,
@@ -94,36 +120,68 @@ class Weather {
       pressure: Math.ceil(data.main.pressure * 0.7506),
     };
 
-    this.render(weather);
+    return weather;
   }
 
   async fetchData(cityName) {
     const dataUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${this.API_KEY}&lang=ru&units=metric`;
 
-    const data = await fetch(dataUrl).then((response) => response.json());
-    this.getWeather(data);
+    try {
+      const response = await fetch(dataUrl);
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Город не найден!');
+        }
+
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  onSearchFormSubmit = (event) => {
+  onSearchFormSubmit = async (event) => {
+    this.showLoadingIndicator();
     event.preventDefault();
 
-    const cityName = this.searchFormInputElement.value.trim();
-    this.fetchData(cityName);
-    this.setCityToLocalStorage(cityName);
-    this.searchFormInputElement.value = '';
+    const city = this.searchFormInputElement.value.trim();
+
+    if (city) {
+      try {
+        this.showLoadingIndicator();
+        const data = await this.fetchData(city);
+
+        if (data) {
+          const weather = this.getWeather(data);
+          this.render(weather);
+          this.setCityToLocalStorage(city);
+        }
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        this.hideLoadingIndicator();
+        this.searchFormInputElement.value = '';
+      }
+    }
   };
 
-  onUpdateButtonClick = () => {
-    const city = this.getCityFromLocalStorage();
-    this.fetchData(city);
+  onUpdateButtonClick = (event) => {
+    const updateButtonElement = document.querySelector(
+      this.selectors.updateButton
+    );
+
+    if (event.target === updateButtonElement) {
+      this.renderFromLocalStorage();
+    }
   };
 
   bindEvents() {
     this.searchFormElement.addEventListener('submit', this.onSearchFormSubmit);
-    this.updateButtonElement.addEventListener(
-      'click',
-      this.onUpdateButtonClick
-    );
+    this.weatherCardElement.addEventListener('click', this.onUpdateButtonClick);
   }
 }
 
