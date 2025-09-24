@@ -1,10 +1,12 @@
 .container {
   display: flex;
+  max-width: 768px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px 12px;
   gap: 40px;
+  margin: 0 auto;
 }
 
 .hidden {
